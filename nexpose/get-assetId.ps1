@@ -42,7 +42,7 @@ $encodedUserAndPass = [Convert]::ToBase64String($bytesUserAndPass)
 $basicAuth = "Basic $($encodedUserAndPass)"
 
 # Set the URI 
-$scanUri = "https://$($nexposeHost):$($nexposePort)/api/3/assets/search"
+$restUri = "https://$($nexposeHost):$($nexposePort)/api/3/assets/search"
 
 # Set the body to be posted
 $body = @{
@@ -62,7 +62,7 @@ $headers = @{
 
 # Call the REST cmdlet
 #$response = 
-$response = Invoke-RestMethod -Uri $scanUri -Method Post -Body $jsonPayload -Headers $headers -ContentType 'application/json'
+$response = Invoke-RestMethod -Uri $restUri -Method Post -Body $jsonPayload -Headers $headers -ContentType 'application/json'
   
 # Output the ID of the item that Nexpose uses
 write-output $response.resources.id

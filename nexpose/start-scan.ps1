@@ -27,7 +27,7 @@ $encodedUserAndPass = [Convert]::ToBase64String($bytesUserAndPass)
 $basicAuth = "Basic $($encodedUserAndPass)"
 
 # Set the URI 
-$scanUri = "https://$($nexposeHost):$($nexposePort)/api/3/sites/$($siteId)/scans"
+$restUri = "https://$($nexposeHost):$($nexposePort)/api/3/sites/$($siteId)/scans"
 
 # Set the body to be posted
 $body = @{
@@ -47,7 +47,7 @@ $headers = @{
 
 # Call the REST cmdlet
 #$response = 
-Invoke-RestMethod -Uri $scanUri -Method Post -Body $jsonPayload -Headers $headers -ContentType 'application/json'
+Invoke-RestMethod -Uri $restUri -Method Post -Body $jsonPayload -Headers $headers -ContentType 'application/json'
 
 # Write the ID of the scan that was created
 #Write-Output $response.id

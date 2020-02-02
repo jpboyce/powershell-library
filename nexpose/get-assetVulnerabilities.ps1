@@ -36,7 +36,7 @@ $encodedUserAndPass = [Convert]::ToBase64String($bytesUserAndPass)
 $basicAuth = "Basic $($encodedUserAndPass)"
 
 # Set the URI 
-$scanUri = "https://$($nexposeHost):$($nexposePort)/api/3/assets/$($assetId)/vulnerabilities"
+$restUri = "https://$($nexposeHost):$($nexposePort)/api/3/assets/$($assetId)/vulnerabilities"
 
 # Set the headers
 $headers = @{
@@ -45,7 +45,7 @@ $headers = @{
 }
 
 # Call the REST cmdlet
-$response = Invoke-RestMethod -Uri $scanUri -Method Get -Body $jsonPayload -Headers $headers -ContentType 'application/json'
+$response = Invoke-RestMethod -Uri $restUri -Method Get -Body $jsonPayload -Headers $headers -ContentType 'application/json'
   
 # Output the vulnerabilities of the asset
 write-output $response.resources

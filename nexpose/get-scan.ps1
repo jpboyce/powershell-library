@@ -40,7 +40,7 @@ $encodedUserAndPass = [Convert]::ToBase64String($bytesUserAndPass)
 $basicAuth = "Basic $($encodedUserAndPass)"
 
 # Set the URI 
-$scanUri = "https://$($nexposeHost):$($nexposePort)/api/3/scans/$($scanId)"
+$restUri = "https://$($nexposeHost):$($nexposePort)/api/3/scans/$($scanId)"
 
 # Set the headers
 $headers = @{
@@ -49,7 +49,7 @@ $headers = @{
 }
 
 # Call the REST cmdlet
-$response = Invoke-RestMethod -Uri $scanUri -Method Get -Headers $headers -verbose
+$response = Invoke-RestMethod -Uri $restUri -Method Get -Headers $headers -verbose
 
 # output depending on vulnerabilityType value
 switch ($vulnerabilityType) {
