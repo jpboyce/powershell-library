@@ -45,8 +45,7 @@ $headers = @{
 }
 
 # Call the REST cmdlet
-#$response = 
 $response = Invoke-RestMethod -Uri $scanUri -Method Get -Body $jsonPayload -Headers $headers -ContentType 'application/json'
   
-# Output the ID of the item that Nexpose uses
+# Output the vulnerabilities of the asset
 write-output $response.resources
