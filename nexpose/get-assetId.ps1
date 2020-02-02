@@ -61,7 +61,6 @@ $headers = @{
 }
 
 # Call the REST cmdlet
-#$response = 
 $response = Invoke-RestMethod -Uri $restUri -Method Post -Body $jsonPayload -Headers $headers -ContentType 'application/json'
   
 # Output the ID of the item that Nexpose uses

@@ -46,8 +46,7 @@ $headers = @{
 }
 
 # Call the REST cmdlet
-#$response = 
-Invoke-RestMethod -Uri $restUri -Method Post -Body $jsonPayload -Headers $headers -ContentType 'application/json'
+$response = Invoke-RestMethod -Uri $restUri -Method Post -Body $jsonPayload -Headers $headers -ContentType 'application/json'
 
 # Write the ID of the scan that was created
-#Write-Output $response.id
+Write-Output $response.id
