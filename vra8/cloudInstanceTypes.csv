@@ -1,8 +1,8 @@
 Name,vSphereCPU,vSphereRAM,aws,azure,gcp
-Nano,1,0.5,t2.nano,Standard_B1ls,
-Micro,1,1,t2.micro,Standard_B1s,e2-micro
-Small,1,2,t2.small,Standard_B1ms,e2-small
-Medium,2,4,t2.medium,Standard_B2s,e2-medium
-Large,2,8,t2.large,Standard_B2ms,e2-standard-2
-XLarge,4,16,t2.xlarge,Standard_B4ms,e2-standard-4
-2XLarge,8,32,t2.2xlarge,Standard_B8ms,e2-standard-8
+Nano,1,512,t2.nano,Standard_B1ls,
+Micro,1,1024,t2.micro,Standard_B1s,e2-micro
+Small,1,2048,t2.small,Standard_B1ms,e2-small
+Medium,2,4096,t2.medium,Standard_B2s,e2-medium
+Large,2,8192,t2.large,Standard_B2ms,e2-standard-2
+XLarge,4,16386,t2.xlarge,Standard_B4ms,e2-standard-4
+2XLarge,8,32768,t2.2xlarge,Standard_B8ms,e2-standard-8
