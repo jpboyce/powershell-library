@@ -99,6 +99,20 @@ $cloudAccountRegions = Invoke-RestMethod -Method GET -Uri $queryUri -ContentType
 return ($cloudAccountRegions).content.id
 }
 
+Function Add-FlavorMappingForRegion {
+  [CmdletBinding()]
+  param (
+    [Parameter()]
+    [String]
+    $accessToken,
+    [Parameter()]
+    [String]
+    $Body
+)
+$mappingResult = Invoke-RestMethod -Method POST -Uri $iaasFlavorProfilesUri -ContentType "application/json" -Body $jsonBody -Headers @{Authorization="Bearer $($accessToken)"}
+return $mappingResult
+}
+
 $CSPRefreshToken = Get-CSPRefreshToken -Username $Username -Password $Password
 $iaasAccessToken = Get-iaasAccessToken -refreshToken $CSPRefreshToken
 $cloudAccounts = (Get-CloudAccounts -accessToken $iaasAccessToken).content
@@ -109,8 +123,51 @@ foreach ($item in $cloudAccounts) {
   Write-Output "Account Type: $($cloudAccountType)"
   Write-Output "Account ID: $($cloudAccountId)"
   $cloudAccountRegionId = Get-CloudAccountRegions -accessToken $iaasAccessToken -cloudAccountId $cloudAccountId
+
+  $tempFlavorMapping = @{}
+
+  foreach ($entry in $cloudInstanceTypes) {
+    switch ($cloudAccountType) {
+      "vsphere" {
+        $tempFlavorMappingValues = @{
+          cpuCount = $entry.vSphereCPU
+          memoryInMB = $entry.vSphereRAM
+        }
+        $tempFlavorMapping.Add($entry.name, $tempFlavorMappingValues)
+        break
+      }
+      "aws" {
+        $tempFlavorMappingValues = @{
+          name = $entry.aws
+        }
+        $tempFlavorMapping.Add($entry.name, $tempFlavorMappingValues)
+        break
+      }
+      "azure" {
+        $tempFlavorMappingValues = @{
+          name = $entry.azure
+        }
+        $tempFlavorMapping.Add($entry.name, $tempFlavorMappingValues)
+        break
+      }
+      "gcp" {
+        $tempFlavorMappingValues = @{
+          name = $entry.gcp
+        }
+        $tempFlavorMapping.Add($entry.name, $tempFlavorMappingValues)
+        break
+      }
+    }
+
+    }
+    $Body = @{
+      regionId = $cloudAccountRegionId
+       name = "flavormapping"
+       flavorMapping = $tempFlavorMapping
+    }
+    $jsonBody = $Body | ConvertTo-Json
+    Add-FlavorMappingForRegion -accessToken $iaasAccessToken -Body $jsonBody
+    #Invoke-RestMethod -Method POST -Uri $iaasFlavorProfilesUri -ContentType "application/json" -Body $jsonBody -Headers @{Authorization="Bearer $($iaasAccessToken)"}
+
 }
 
-#foreach ($item in $cloudInstanceTypes) {
-#  $item.Name
-#}
