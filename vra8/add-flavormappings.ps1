@@ -93,22 +93,24 @@ Function Get-CloudAccountRegions {
     [String]
     $cloudAccountId
 )
-Invoke-RestMethod -Method GET -Uri "$($iaasCloudRegionsUri)/?$filter=cloudAccountId eq $($cloudAccountId)" -ContentType "application/json" -Headers @{Authorization="Bearer $($accessToken)"}
+$queryUri = $iaasCloudRegionsUri + '/?$filter=cloudAccountId eq ' + $cloudAccountId
+
+$cloudAccountRegions = Invoke-RestMethod -Method GET -Uri $queryUri -ContentType "application/json" -Headers @{Authorization="Bearer $($accessToken)"}
+return ($cloudAccountRegions).content.id
 }
 
-<#
 $CSPRefreshToken = Get-CSPRefreshToken -Username $Username -Password $Password
 $iaasAccessToken = Get-iaasAccessToken -refreshToken $CSPRefreshToken
 $cloudAccounts = (Get-CloudAccounts -accessToken $iaasAccessToken).content
 
 foreach ($item in $cloudAccounts) {
-  Write-Output "Account Type: $($item.cloudAccountType)"
-  Write-Output "Account ID: $($item.id)"
-  Get-CloudAccountRegions -accessToken $iaasAccessToken -cloudAccountId $item.id
+  $cloudAccountType = $item.cloudAccountType
+  $cloudAccountId = $item.id
+  Write-Output "Account Type: $($cloudAccountType)"
+  Write-Output "Account ID: $($cloudAccountId)"
+  $cloudAccountRegionId = Get-CloudAccountRegions -accessToken $iaasAccessToken -cloudAccountId $cloudAccountId
 }
-#>
 
-
-foreach ($item in $cloudInstanceTypes) {
-  $item.Name
-}
+#foreach ($item in $cloudInstanceTypes) {
+#  $item.Name
+#}
