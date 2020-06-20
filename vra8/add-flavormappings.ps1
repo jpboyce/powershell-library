@@ -16,11 +16,15 @@ $cspLoginUri = "https://" + $Server + "/csp/gateway/am/api/login?access_token"
 $iaasLoginUri = "https://" + $Server + "/iaas/api/login"
 $iaasFlavorProfilesUri = "https://" + $Server + "/iaas/api/flavor-profiles"
 $iaasCloudAccountsUri = "https://" + $Server + "/iaas/api/cloud-accounts"
+$iaasCloudRegionsUri = "https://" + $Server + "/iaas/api/regions"
+$cloudInstanceTypes = Import-Csv -Path 'cloudInstanceTypes.csv' -Delimiter ','
+
 # Diagnostic Output
 Write-Verbose "Using server name: $($Server)"
 Write-Verbose "Using cspLoginUri: $($cspLoginUri)"
 Write-Verbose "Using iaasLoginUri: $($iaasLoginUri)"
 Write-Verbose "Using iaasCloudAccountsUri: $($iaasCloudAccountsUri)"
+Write-Verbose "Using iaasCloudRegionsUri: $($iaasCloudRegionsUri)"
 Write-Verbose "Using iaasFlavorProfilesUri: $($iaasFlavorProfilesUri)"
 Write-Verbose "Using user name: $($Username)"
 # Do a basic network test to ensure we can connect to it
@@ -79,10 +83,32 @@ $cloudAccounts = Invoke-RestMethod -Method GET -Uri $iaasCloudAccountsUri -Conte
 return $cloudAccounts
 }
 
+Function Get-CloudAccountRegions {
+  [CmdletBinding()]
+  param (
+    [Parameter()]
+    [String]
+    $accessToken,
+    [Parameter()]
+    [String]
+    $cloudAccountId
+)
+Invoke-RestMethod -Method GET -Uri "$($iaasCloudRegionsUri)/?$filter=cloudAccountId eq $($cloudAccountId)" -ContentType "application/json" -Headers @{Authorization="Bearer $($accessToken)"}
+}
+
+<#
 $CSPRefreshToken = Get-CSPRefreshToken -Username $Username -Password $Password
 $iaasAccessToken = Get-iaasAccessToken -refreshToken $CSPRefreshToken
 $cloudAccounts = (Get-CloudAccounts -accessToken $iaasAccessToken).content
 
 foreach ($item in $cloudAccounts) {
   Write-Output "Account Type: $($item.cloudAccountType)"
+  Write-Output "Account ID: $($item.id)"
+  Get-CloudAccountRegions -accessToken $iaasAccessToken -cloudAccountId $item.id
+}
+#>
+
+
+foreach ($item in $cloudInstanceTypes) {
+  $item.Name
 }
