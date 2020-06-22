@@ -179,24 +179,30 @@ foreach ($item in $cloudAccounts) {
         break
       }
       "aws" {
+        if ($entry.aws -ne "") {
         $tempFlavorMappingValues = @{
           name = $entry.aws
         }
         $tempFlavorMapping.Add($entry.name, $tempFlavorMappingValues)
+      }
         break
       }
       "azure" {
-        $tempFlavorMappingValues = @{
+        if ($entry.azure -ne "") {
+          $tempFlavorMappingValues = @{
           name = $entry.azure
         }
         $tempFlavorMapping.Add($entry.name, $tempFlavorMappingValues)
         break
       }
+      }
       "gcp" {
+        if ($entry.gcp -ne "") {
         $tempFlavorMappingValues = @{
           name = $entry.gcp
         }
         $tempFlavorMapping.Add($entry.name, $tempFlavorMappingValues)
+      }
         break
       }
     }
